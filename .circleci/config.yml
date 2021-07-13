@@ -19,18 +19,18 @@ jobs:
 
       # The next step will run the unit tests
       - android/run-tests:
-          test-command: ./gradlew lint testDebug --continue
+          test-command: ./android/gradlew lint testDebug --continue
 
       # Then start the emulator and run the Instrumentation tests!
       - android/start-emulator-and-run-tests:
-          test-command: ./gradlew connectedDebugAndroidTest
+          test-command: ./android/gradlew connectedDebugAndroidTest
           system-image: system-images;android-25;google_apis;x86
 
       # And finally run the release build
       - run:
           name: Assemble release build
           command: |
-            ./gradlew assembleRelease    
+            ./android/gradlew assembleRelease
 
 workflows:
   # Below is the definition of your workflow.

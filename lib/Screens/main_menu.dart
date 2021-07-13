@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wakeamole/Utils/AppColors.dart';
 
 class MainMenu extends StatefulWidget {
-  MainMenu({Key key}) : super(key: key);
+  MainMenu({Key? key}) : super(key: key);
 
   @override
   _MainMenuState createState() => _MainMenuState();
