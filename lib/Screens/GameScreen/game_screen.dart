@@ -20,7 +20,11 @@ class _GameScreenState extends State<GameScreen> {
         backgroundColor: Colors.transparent,
         title: Text(""),
       ),
-      body: Column(),
+      body: Column(
+        children: [
+          Text("This is a test"),
+        ],
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakeamole/Screens/Controllers/SettingsController.dart';
+import 'package:wakeamole/Screens/GameScreen/game_screen.dart';
 import 'package:wakeamole/Screens/Rankings.dart';
 import 'package:wakeamole/Utils/AppColors.dart';
 import 'package:wakeamole/Utils/widgets/app_main_button.dart';
@@ -17,6 +18,8 @@ class _MainMenuState extends State<MainMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
@@ -25,7 +28,9 @@ class _MainMenuState extends State<MainMenu> {
             alignment: Alignment.center,
             child: Hero(tag: 'app-logo', child: Image.asset("assets/logo.png")),
           ),
-          AppMainButton(ontap: () {}, title: "START"),
+          AppMainButton(ontap: () {
+            Get.to(()=>GameScreen());
+          }, title: "START"),
           SizedBox(
             height: 15,
           ),
