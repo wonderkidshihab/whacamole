@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors{
-  static Color MAIN = Colors.red;
-  static Color ACCENT = Colors.redAccent;
+  static const Color MAIN = Colors.red;
+  static const Color ACCENT = Colors.redAccent;
+  static const Color BUTTONTEXT = Colors.white;
 }

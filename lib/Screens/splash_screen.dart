@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wakeamole/Screens/Controllers/SettingsController.dart';
+import 'package:wakeamole/Screens/main_menu.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key}) : super(key: key);
@@ -24,19 +27,21 @@ class _SplashScreenState extends State<SplashScreen> {
         child: AnimatedContainer(
           height: height,
           duration: Duration(seconds: 5),
-          curve: Curves.bounceInOut,
-          child: Image.asset("assets/logo.jpg"),
+          curve: Curves.bounceIn,
+          child: Hero(tag: 'app-logo',
+          child: Image.asset("assets/logo.png")),
         ),
       ),
     );
   }
 
   void nextScreen() async{
+    Get.put(SettingsController());
     await Future.delayed(Duration(microseconds: 10));
     setState(() {
       height = 600;
     });
     await Future.delayed(Duration(milliseconds: 5100));
-    //Next screen call
+    Get.off(()=>MainMenu());
   }
 }
