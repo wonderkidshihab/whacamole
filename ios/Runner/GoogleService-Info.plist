@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>859233824506-2tmgl8vsahfa9r2gq8l8m89a8oavh2gf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.859233824506-2tmgl8vsahfa9r2gq8l8m89a8oavh2gf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>859233824506-5c12v6tfqvec53en1j7s73avo505krr2.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBcFOc7m6W9jBzY_VDkQUTUjsiVZjD61Z4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>859233824506</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.wonderkid.wakeamole.wakeamole</string>
+	<key>PROJECT_ID</key>
+	<string>whackamole-7500c</string>
+	<key>STORAGE_BUCKET</key>
+	<string>whackamole-7500c.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:859233824506:ios:e4fd535477f7bf4073e343</string>
+</dict>
+</plist>
