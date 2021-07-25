@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "859233824506",
-    "project_id": "whackamole-7500c",
-    "storage_bucket": "whackamole-7500c.appspot.com"
+    "project_number": "106081562694",
+    "project_id": "whacamole-6ebc7",
+    "storage_bucket": "whacamole-6ebc7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:859233824506:android:e7d66b844bb405d573e343",
+        "mobilesdk_app_id": "1:106081562694:android:d29fc702ec90df508a1a47",
         "android_client_info": {
           "package_name": "com.wonderkid.wakeamole.wakeamole"
         }
       },
       "oauth_client": [
         {
-          "client_id": "859233824506-5c12v6tfqvec53en1j7s73avo505krr2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.wonderkid.wakeamole.wakeamole",
-            "certificate_hash": "bf778771b9123391693410cc9a114214bbbe5e89"
-          }
-        },
-        {
-          "client_id": "859233824506-l2vblhrg5u5kf89uit1jo505k8lgkb7k.apps.googleusercontent.com",
+          "client_id": "106081562694-gv82j226h9kqiqrv502iot3i146k8gnk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB0jbQ-OkGIWHgbxeyedphu7YlXhbjVQXA"
+          "current_key": "AIzaSyDYspq2BY2C7ewzs48ScujYtmXf_MCT-dI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "859233824506-l2vblhrg5u5kf89uit1jo505k8lgkb7k.apps.googleusercontent.com",
+              "client_id": "106081562694-gv82j226h9kqiqrv502iot3i146k8gnk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

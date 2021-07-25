@@ -5,6 +5,7 @@ import 'package:wakeamole/Screens/GameScreen/game_screen.dart';
 import 'package:wakeamole/Screens/Rankings.dart';
 import 'package:wakeamole/Utils/AppColors.dart';
 import 'package:wakeamole/Utils/widgets/app_main_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class MainMenu extends StatefulWidget {
   MainMenu({Key? key}) : super(key: key);
@@ -14,8 +15,11 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   @override
   Widget build(BuildContext context) {
+    GoogleSignInAccount? user = _googleSignIn.currentUser;
+
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -80,12 +84,17 @@ class _MainMenuState extends State<MainMenu> {
                           height: 30,
                         ),
                         Obx(() => AppMainButton(
-                              ontap: () {
-                                SettingsController.to.signedIn(!SettingsController.to.signedIn());
-                              },
+                              ontap: ()async {
+                                 var result = await _googleSignIn.signIn();
+                                 if (result != null) {
+                                   SettingsController.to.signedIn(true);
+                                 }  else{
+                                   SettingsController.to.signedIn(false);
+                                 }
+                                },
                               title: SettingsController.to.signedIn()
-                                  ? "Signed In"
-                                  : "Sign In",
+                                  ? "Sign In"
+                                  : "Sign Out",
                               backgroundColor: SettingsController.to.signedIn()
                                   ? Colors.green
                                   : AppColors.MAIN,
