@@ -20,7 +20,16 @@ class _RankingScreenState extends State<RankingScreen> {
           style: TextStyle(color: AppColors.MAIN),
         ),
       ),
-      body: DataTableTheme(
+      body:
+      Center(
+        child: Text(
+          "Coming Soon...",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20.0,),
+        ),
+      ),
+
+      /*DataTableTheme(
         data: DataTableThemeData(
           headingTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 50, color: AppColors.ACCENT),
         ),
@@ -47,7 +56,7 @@ class _RankingScreenState extends State<RankingScreen> {
             DataColumn(label: Text('Score'), numeric: true),
           ],
         ),
-      ),
+      ),*/
     );
   }
 }

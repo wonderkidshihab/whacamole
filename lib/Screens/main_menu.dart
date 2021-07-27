@@ -83,7 +83,7 @@ class _MainMenuState extends State<MainMenu> {
                         SizedBox(
                           height: 30,
                         ),
-                        Obx(() => AppMainButton(
+                        /*Obx(() => AppMainButton(
                               ontap: ()async {
                                  var result = await _googleSignIn.signIn();
                                  if (result != null) {
@@ -98,7 +98,7 @@ class _MainMenuState extends State<MainMenu> {
                               backgroundColor: SettingsController.to.signedIn()
                                   ? Colors.green
                                   : AppColors.MAIN,
-                            )),
+                            )),*/
                       ],
                     ),
                   ),

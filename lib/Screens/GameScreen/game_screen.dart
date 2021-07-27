@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
+
 
 class GameScreen extends StatefulWidget {
   GameScreen({Key? key}) : super(key: key);
@@ -16,6 +18,9 @@ class _GameScreenState extends State<GameScreen> {
   late int life;
   late bool cancelTimer;
   late int TimerDuration;
+  final player = AudioPlayer();
+  final successtone = AudioPlayer();
+  final marakha = AudioPlayer();
 
   @override
   void initState() {
@@ -23,6 +28,7 @@ class _GameScreenState extends State<GameScreen> {
     life = 3;
     cancelTimer = false;
     TimerDuration = 1000;
+    playAudio();
     super.initState();
   }
 
@@ -92,9 +98,11 @@ class _GameScreenState extends State<GameScreen> {
 
   Future<void> newPosition(int index) async {
     if (presentMoleIndex == index) {
+      successtone.play();
       score++;
     } else {
       life--;
+      marakha.play();
       if (life < 0) {
         Get.back();
       }
@@ -113,6 +121,7 @@ class _GameScreenState extends State<GameScreen> {
   StartTimer(int presentMoleIndex, int score) async {
     await Future.delayed(Duration(milliseconds: TimerDuration));
     if (presentMoleIndex == this.presentMoleIndex && score == this.score) {
+      marakha.play();
       if (mounted) {
         setState(() {
           this.life--;
@@ -124,5 +133,18 @@ class _GameScreenState extends State<GameScreen> {
         });
       }
     }
+  }
+
+  void playAudio()async {
+    await player.setAsset('assets/music.mp3');
+    await successtone.setAsset('assets/successtone.mp3');
+    await marakha.setAsset('assets/marakha.mp3');
+    player.play();
+  }
+  @override
+  void dispose() {
+    player.stop();
+    player.dispose();
+    super.dispose();
   }
 }
