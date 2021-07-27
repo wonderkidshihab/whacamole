@@ -130,7 +130,6 @@ class _GameScreenState extends State<GameScreen> {
   StartTimer(int presentMoleIndex, int score) async {
     await Future.delayed(Duration(milliseconds: TimerDuration));
     if (presentMoleIndex == this.presentMoleIndex && score == this.score && !gameover) {
-      marakha.play();
       if (mounted) {
         setState(() {
           decreaseLife();
@@ -142,6 +141,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void decreaseLife() async{
+    marakha.play();
     life--;
     if (mounted) {
       setState(() {
@@ -203,6 +203,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void increaseScore()async {
+    successtone.play();
     score++;
     if (mounted) {
       setState(() {
@@ -235,6 +236,16 @@ class _GameScreenState extends State<GameScreen> {
     await successtone.setAsset('assets/successtone.mp3');
     await marakha.setAsset('assets/marakha.mp3');
     player.play();
+    successtone.processingStateStream.listen((event) {
+      if (event == ProcessingState.completed) {
+        successtone.stop();
+      }
+    });
+    marakha.processingStateStream.listen((event) {
+      if (event == ProcessingState.completed) {
+        marakha.stop();
+      }
+    });
   }
   @override
   void dispose() {
