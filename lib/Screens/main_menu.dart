@@ -87,22 +87,22 @@ class _MainMenuState extends State<MainMenu> {
                         SizedBox(
                           height: 30,
                         ),
-                        Obx(() => AppMainButton(
-                              ontap: () async {
-                                var result = await _googleSignIn.signIn();
-                                if (result != null) {
-                                  SettingsController.to.signedIn(true);
-                                } else {
-                                  SettingsController.to.signedIn(false);
-                                }
-                              },
+                        /*Obx(() => AppMainButton(
+                              ontap: ()async {
+                                 var result = await _googleSignIn.signIn();
+                                 if (result != null) {
+                                   SettingsController.to.signedIn(true);
+                                 }  else{
+                                   SettingsController.to.signedIn(false);
+                                 }
+                                },
                               title: SettingsController.to.signedIn()
                                   ? "Sign In"
                                   : "Sign Out",
                               backgroundColor: SettingsController.to.signedIn()
                                   ? Colors.green
                                   : AppColors.MAIN,
-                            )),
+                            )),*/
                       ],
                     ),
                   ),
