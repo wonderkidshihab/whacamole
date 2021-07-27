@@ -72,7 +72,7 @@ class _GameScreenState extends State<GameScreen> {
                   alignment: Alignment.center,
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: Colors.deepPurple,
                     child: presentMoleIndex == index
                         ? Image.asset(
                             "assets/mole.png",

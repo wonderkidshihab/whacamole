@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakeamole/Screens/Controllers/SettingsController.dart';
@@ -16,6 +17,7 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> {
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
   @override
   Widget build(BuildContext context) {
     GoogleSignInAccount? user = _googleSignIn.currentUser;
@@ -32,9 +34,11 @@ class _MainMenuState extends State<MainMenu> {
             alignment: Alignment.center,
             child: Hero(tag: 'app-logo', child: Image.asset("assets/logo.png")),
           ),
-          AppMainButton(ontap: () {
-            Get.to(()=>GameScreen());
-          }, title: "START"),
+          AppMainButton(
+              ontap: () {
+                Get.to(() => GameScreen());
+              },
+              title: "START"),
           SizedBox(
             height: 15,
           ),
@@ -84,14 +88,14 @@ class _MainMenuState extends State<MainMenu> {
                           height: 30,
                         ),
                         Obx(() => AppMainButton(
-                              ontap: ()async {
-                                 var result = await _googleSignIn.signIn();
-                                 if (result != null) {
-                                   SettingsController.to.signedIn(true);
-                                 }  else{
-                                   SettingsController.to.signedIn(false);
-                                 }
-                                },
+                              ontap: () async {
+                                var result = await _googleSignIn.signIn();
+                                if (result != null) {
+                                  SettingsController.to.signedIn(true);
+                                } else {
+                                  SettingsController.to.signedIn(false);
+                                }
+                              },
                               title: SettingsController.to.signedIn()
                                   ? "Sign In"
                                   : "Sign Out",
