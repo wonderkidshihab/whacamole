@@ -1,4 +1,4 @@
-package com.wonderkid.wakeamole.wakeamole
+package com.wonderkid.wakeamole
 
 import io.flutter.embedding.android.FlutterActivity
 

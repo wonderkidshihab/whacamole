@@ -40,4 +40,4 @@ post_install do |installer|
          target.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
       end
   end
-end
+
