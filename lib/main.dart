@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakeamole/Screens/splash_screen.dart';
+import 'package:wakeamole/Utils/game_theme.dart';
 import 'package:wakeamole/firebase_options.dart';
 
 main() async {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
       navigatorObservers: [],
+      theme: GameTheme.theme(),
     );
   }
 }

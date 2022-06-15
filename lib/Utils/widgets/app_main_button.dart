@@ -7,11 +7,17 @@ class AppMainButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
 
-  const AppMainButton({Key? key,required this.ontap,required this.title, this.backgroundColor = AppColors.ACCENT, this.textColor = AppColors.BUTTONTEXT}) : super(key: key);
+  const AppMainButton(
+      {Key? key,
+      required this.ontap,
+      required this.title,
+      this.backgroundColor = AppColors.ACCENT,
+      this.textColor = AppColors.BUTTONTEXT})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         ontap?.call();
       },
       child: Container(
@@ -19,15 +25,13 @@ class AppMainButton extends StatelessWidget {
         alignment: Alignment.center,
         width: 300,
         decoration: BoxDecoration(
-          color: backgroundColor!,
-          borderRadius: BorderRadius.circular(30)
-        ),
+            color: backgroundColor!, borderRadius: BorderRadius.circular(30)),
         child: Text(
           title!,
           style: TextStyle(
             color: textColor!,
             fontWeight: FontWeight.bold,
-            fontSize: 30,
+            fontSize: 20,
           ),
         ),
       ),
