@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,14 +11,41 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await MobileAds.instance.initialize();
-  runApp(MyApp());
+  final TrackingStatus status =
+  await AppTrackingTransparency.requestTrackingAuthorization();
+  runApp(MyApp(status: status,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final TrackingStatus status;
+
+  MyApp({required this.status});
 
   @override
   Widget build(BuildContext context) {
+    String statusText;
+
+    switch (status) {
+      case TrackingStatus.authorized:
+        statusText = 'Tracking Status Authorized';
+        break;
+      case TrackingStatus.denied:
+        statusText = 'Tracking Status Denied';
+        break;
+      case TrackingStatus.notDetermined:
+        statusText = 'Tracking Status Not Determined';
+        break;
+      case TrackingStatus.notSupported:
+        statusText = 'Tracking Status Not Supported';
+        break;
+      case TrackingStatus.restricted:
+        statusText = 'Tracking Status Restricted';
+        break;
+      default:
+        statusText = 'You should not see this...';
+        break;
+    }
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
