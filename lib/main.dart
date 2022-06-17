@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:wakeamole/Screens/splash_screen.dart';
 import 'package:wakeamole/Utils/game_theme.dart';
 import 'package:wakeamole/firebase_options.dart';
@@ -8,6 +9,7 @@ import 'package:wakeamole/firebase_options.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await MobileAds.instance.initialize();
   runApp(MyApp());
 }
 

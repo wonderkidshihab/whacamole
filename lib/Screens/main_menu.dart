@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wakeamole/Screens/Controllers/SettingsController.dart';
 import 'package:wakeamole/Screens/GameScreen/game_screen.dart';
 import 'package:wakeamole/Screens/Rankings.dart';
 import 'package:wakeamole/Utils/AppColors.dart';
 import 'package:wakeamole/Utils/widgets/app_main_button.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class MainMenu extends StatefulWidget {
   MainMenu({Key? key}) : super(key: key);
@@ -16,6 +17,26 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> {
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  late BannerAd _bannerAd;
+  bool isBannerLoaded = false;
+
+  @override
+  void initState() {
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4210461214231566/5305217202',
+      size: AdSize.largeBanner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isBannerLoaded = true;
+          });
+        },
+      ),
+      request: AdRequest(),
+    );
+    _bannerAd.load();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +48,23 @@ class _MainMenuState extends State<MainMenu> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(
+            child: AdWidget(ad: _bannerAd),
+            height: isBannerLoaded ? 150 : 0,
+          ),
           Container(
             transformAlignment: Alignment.center,
             height: Get.height * 0.3,
             alignment: Alignment.center,
             child: Hero(tag: 'app-logo', child: Image.asset("assets/logo.png")),
           ),
-          AppMainButton(
-              ontap: () {
-                Get.to(() => GameScreen());
-              },
-              title: "START"),
+          SingleChildScrollView(
+            child: AppMainButton(
+                ontap: () {
+                  Get.to(() => GameScreen());
+                },
+                title: "START"),
+          ),
           SizedBox(
             height: 15,
           ),

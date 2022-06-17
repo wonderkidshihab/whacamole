@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class GameDialog extends StatefulWidget {
   final int score;
@@ -18,7 +19,7 @@ class _GameDialogState extends State<GameDialog> {
       backgroundColor: Colors.transparent,
       insetAnimationCurve: Curves.easeIn,
       child: Container(
-        height: 450,
+        height: 500,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(30)),
         width: Get.width - 40,
@@ -39,8 +40,23 @@ class _GameDialogState extends State<GameDialog> {
               height: 20,
             ),
             TextButton(
-              onPressed: () {
-                Get.back(result: true);
+              onPressed: () async {
+                await RewardedAd.load(
+                  adUnitId: 'ca-app-pub-4210461214231566/8338574654',
+                  request: AdRequest(),
+                  rewardedAdLoadCallback:
+                      RewardedAdLoadCallback(onAdLoaded: (RewardedAd ad) async {
+                    await ad.show(
+                      onUserEarnedReward:
+                          (AdWithoutView ad, RewardItem reward) {
+                        Get.back(result: false);
+                      },
+                    );
+                    // Keep a reference to the ad so you can show it later.
+                  }, onAdFailedToLoad: (LoadAdError error) {
+                    print('RewardedAd failed to load: $error');
+                  }),
+                );
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
@@ -52,11 +68,57 @@ class _GameDialogState extends State<GameDialog> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "RESTART",
+                    "Get two more ",
                     style: Theme.of(context)
                         .textTheme
                         .headline5!
-                        .copyWith(color: Colors.white),
+                        .copyWith(color: Colors.white, fontFamily: "Roboto"),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () async {
+                await InterstitialAd.load(
+                    adUnitId: 'ca-app-pub-4210461214231566/4131473001',
+                    request: AdRequest(),
+                    adLoadCallback: InterstitialAdLoadCallback(
+                      onAdLoaded: (InterstitialAd ad) async {
+                        // Keep a reference to the ad so you can show it later.
+                        await ad.show();
+                        Get.back(result: true);
+                      },
+                      onAdFailedToLoad: (LoadAdError error) {
+                        print('InterstitialAd failed to load: $error');
+                      },
+                    ));
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Restart",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(color: Colors.white, fontFamily: "Roboto"),
                   ),
                   SizedBox(
                     width: 10,
@@ -64,7 +126,7 @@ class _GameDialogState extends State<GameDialog> {
                   Icon(
                     Icons.refresh,
                     color: Colors.white,
-                    size: 35,
+                    size: 20,
                   ),
                 ],
               ),

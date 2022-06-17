@@ -25,7 +25,9 @@ class AppMainButton extends StatelessWidget {
         alignment: Alignment.center,
         width: 300,
         decoration: BoxDecoration(
-            color: backgroundColor!, borderRadius: BorderRadius.circular(30)),
+          color: backgroundColor!,
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: Text(
           title!,
           style: TextStyle(

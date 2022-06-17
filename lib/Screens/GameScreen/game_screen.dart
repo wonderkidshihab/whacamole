@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakeamole/Screens/GameScreen/game_dialog.dart';
@@ -26,6 +27,9 @@ class _GameScreenState extends State<GameScreen> {
   AudioPlayer player = AudioPlayer();
   AudioPlayer successtone = AudioPlayer();
   AudioPlayer marakha = AudioPlayer();
+  bool isBannerLoaded = false;
+  late BannerAd _bannerAd;
+  late InterstitialAd _interstitialAd;
 
   @override
   void initState() {
@@ -37,6 +41,19 @@ class _GameScreenState extends State<GameScreen> {
     gameover = false;
     nextPopDelay = 500;
     playAudio();
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4210461214231566/5305217202',
+      size: AdSize.largeBanner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isBannerLoaded = true;
+          });
+        },
+      ),
+      request: AdRequest(),
+    );
+    _bannerAd.load();
     super.initState();
   }
 
@@ -80,26 +97,36 @@ class _GameScreenState extends State<GameScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GridView.builder(
-              padding: EdgeInsets.all(20),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, mainAxisSpacing: 30, crossAxisSpacing: 30),
-              itemBuilder: (_, index) {
-                return InkWell(
-                  splashColor: Colors.lightGreenAccent,
-                  onTap: () => newPosition(index),
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.deepPurple,
-                      child: MoleWidget(show: index == presentMoleIndex),
+            SizedBox(
+              height: 150,
+              child: AdWidget(
+                ad: _bannerAd,
+              ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: EdgeInsets.all(20),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 30,
+                    crossAxisSpacing: 30),
+                itemBuilder: (_, index) {
+                  return InkWell(
+                    splashColor: Colors.lightGreenAccent,
+                    onTap: () => newPosition(index),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.deepPurple,
+                        child: MoleWidget(show: index == presentMoleIndex),
+                      ),
                     ),
-                  ),
-                );
-              },
-              itemCount: 9,
+                  );
+                },
+                itemCount: 9,
+              ),
             )
           ],
         ),
@@ -171,6 +198,9 @@ class _GameScreenState extends State<GameScreen> {
           });
       if (restartGame == true) {
         restart();
+      } else if (restartGame == false) {
+        life = 2;
+        gameover = false;
       } else {
         Get.back();
       }
@@ -203,7 +233,7 @@ class _GameScreenState extends State<GameScreen> {
     await successtone.setAsset('assets/successtone.mp3');
   }
 
-  void restart() {
+  void restart() async {
     presentMoleIndex = Random().nextInt(9);
     life = 3;
     cancelTimer = false;
