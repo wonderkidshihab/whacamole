@@ -7,12 +7,49 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:106081562694:android:9624d3fea14f09a08a1a47",
+        "android_client_info": {
+          "package_name": "com.wonderkid.wakeamole"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106081562694-gv82j226h9kqiqrv502iot3i146k8gnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYspq2BY2C7ewzs48ScujYtmXf_MCT-dI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106081562694-gv82j226h9kqiqrv502iot3i146k8gnk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:106081562694:android:d29fc702ec90df508a1a47",
         "android_client_info": {
           "package_name": "com.wonderkid.wakeamole.wakeamole"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "106081562694-21u732ispp2182qrkm8739ig899kp6e3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wonderkid.wakeamole.wakeamole",
+            "certificate_hash": "c7684c482c40bd007cca9a6696f0f39f81d09b56"
+          }
+        },
         {
           "client_id": "106081562694-gv82j226h9kqiqrv502iot3i146k8gnk.apps.googleusercontent.com",
           "client_type": 3

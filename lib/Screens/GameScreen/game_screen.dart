@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio/just_audio.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wakeamole/Screens/GameScreen/game_dialog.dart';
+import 'package:wakeamole/Screens/GameScreen/mole_widget.dart';
 
 class GameScreen extends StatefulWidget {
   GameScreen({Key? key}) : super(key: key);
@@ -19,11 +21,15 @@ class _GameScreenState extends State<GameScreen> {
   late int life;
   late bool cancelTimer;
   late int TimerDuration;
+  late int nextPopDelay;
   late Color backgroundColor;
   late bool gameover;
-  final player = AudioPlayer();
-  final successtone = AudioPlayer();
-  final marakha = AudioPlayer();
+  AudioPlayer player = AudioPlayer();
+  AudioPlayer successtone = AudioPlayer();
+  AudioPlayer marakha = AudioPlayer();
+  bool isBannerLoaded = false;
+  late BannerAd _bannerAd;
+  late InterstitialAd _interstitialAd;
 
   @override
   void initState() {
@@ -33,7 +39,21 @@ class _GameScreenState extends State<GameScreen> {
     TimerDuration = 1000;
     backgroundColor = Colors.white;
     gameover = false;
+    nextPopDelay = 500;
     playAudio();
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4210461214231566/5305217202',
+      size: AdSize.largeBanner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isBannerLoaded = true;
+          });
+        },
+      ),
+      request: AdRequest(),
+    );
+    _bannerAd.load();
     super.initState();
   }
 
@@ -42,7 +62,10 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text("Score: $score", style: TextStyle(color: Colors.black),),
+        title: Text(
+          "Score: $score",
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
@@ -55,7 +78,7 @@ class _GameScreenState extends State<GameScreen> {
               itemBuilder: (_, index) {
                 return Icon(
                   Icons.favorite,
-                  color: index <= life-1 ? Colors.red : Colors.grey,
+                  color: index <= life - 1 ? Colors.red : Colors.grey,
                 );
               },
               separatorBuilder: (_, index) {
@@ -74,31 +97,36 @@ class _GameScreenState extends State<GameScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GridView.builder(
-              padding: EdgeInsets.all(20),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, mainAxisSpacing: 30, crossAxisSpacing: 30),
-              itemBuilder: (_, index) {
-                return InkWell(
-                  splashColor: Colors.lightGreenAccent,
-                  onTap: () => newPosition(index),
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.deepPurple,
-                      child: presentMoleIndex == index
-                          ? Image.asset(
-                              "assets/mole.png",
-                              fit: BoxFit.fitHeight,
-                            )
-                          : null,
+            SizedBox(
+              height: 150,
+              child: AdWidget(
+                ad: _bannerAd,
+              ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: EdgeInsets.all(20),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 30,
+                    crossAxisSpacing: 30),
+                itemBuilder: (_, index) {
+                  return InkWell(
+                    splashColor: Colors.lightGreenAccent,
+                    onTap: () => newPosition(index),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.deepPurple,
+                        child: MoleWidget(show: index == presentMoleIndex),
+                      ),
                     ),
-                  ),
-                );
-              },
-              itemCount: 9,
+                  );
+                },
+                itemCount: 9,
+              ),
             )
           ],
         ),
@@ -117,19 +145,26 @@ class _GameScreenState extends State<GameScreen> {
         presentMoleIndex = 15;
       });
     }
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(Duration(milliseconds: nextPopDelay));
     if (mounted) {
       setState(() {
         presentMoleIndex = Random().nextInt(9);
       });
     }
+    if (TimerDuration > 100) {
+      TimerDuration -= 100;
+    }
+    if (nextPopDelay > 100) {
+      nextPopDelay -= 10;
+    }
     StartTimer(presentMoleIndex, score);
-
   }
 
   StartTimer(int presentMoleIndex, int score) async {
     await Future.delayed(Duration(milliseconds: TimerDuration));
-    if (presentMoleIndex == this.presentMoleIndex && score == this.score && !gameover) {
+    if (presentMoleIndex == this.presentMoleIndex &&
+        score == this.score &&
+        !gameover) {
       if (mounted) {
         setState(() {
           decreaseLife();
@@ -140,7 +175,7 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  void decreaseLife() async{
+  void decreaseLife() async {
     marakha.play();
     life--;
     if (mounted) {
@@ -150,47 +185,23 @@ class _GameScreenState extends State<GameScreen> {
     }
     if (life < 0) {
       int highScore = 0;
-      highScore = (await SharedPreferences.getInstance()).getInt("highscore") ?? 0;
+      highScore =
+          (await SharedPreferences.getInstance()).getInt("highscore") ?? 0;
       if (score > highScore) {
         (await SharedPreferences.getInstance()).setInt("highscore", score);
       }
       gameover = true;
-      var restartGame = await showDialog( context: context, builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetAnimationCurve: Curves.easeIn,
-          child: Container(
-            height: 400,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30)),
-            width: Get.width - 40,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            child: Column(
-              children: [
-                Text("Your Score: $score",style: Theme.of(context).textTheme.headline4!.copyWith(color: Colors.redAccent)),
-                SizedBox(
-                  height: 20,
-                ),
-                Image.asset("assets/mole win.png"),
-                SizedBox(
-                  height: 20,
-                ),
-
-                TextButton(onPressed: (){Get.back(result: true);}, child: Text("RESTART",style: Theme.of(context).textTheme.headline4!.copyWith(color: Colors.lightBlue)),),
-
-                SizedBox(
-                  height: 30,
-                ),
-                Text("Your Highscore: ${score > highScore ? score : highScore}",style: Theme.of(context).textTheme.headline5!.copyWith(color: Colors.redAccent)),
-              ],
-            ),
-          ),
-        );
-      });
+      var restartGame = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return GameDialog(score: score, highscore: highScore);
+          });
       if (restartGame == true) {
         restart();
-      }  else{
+      } else if (restartGame == false) {
+        life = 2;
+        gameover = false;
+      } else {
         Get.back();
       }
     }
@@ -200,9 +211,11 @@ class _GameScreenState extends State<GameScreen> {
         backgroundColor = Colors.white;
       });
     }
+    marakha = AudioPlayer();
+    await marakha.setAsset('assets/marakha.mp3');
   }
 
-  void increaseScore()async {
+  void increaseScore() async {
     successtone.play();
     score++;
     if (mounted) {
@@ -216,9 +229,11 @@ class _GameScreenState extends State<GameScreen> {
         backgroundColor = Colors.white;
       });
     }
+    successtone = AudioPlayer();
+    await successtone.setAsset('assets/successtone.mp3');
   }
 
-  void restart(){
+  void restart() async {
     presentMoleIndex = Random().nextInt(9);
     life = 3;
     cancelTimer = false;
@@ -226,12 +241,10 @@ class _GameScreenState extends State<GameScreen> {
     backgroundColor = Colors.white;
     gameover = false;
     score = 0;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
-  void playAudio()async {
+  void playAudio() async {
     await player.setAsset('assets/music.mp3');
     await successtone.setAsset('assets/successtone.mp3');
     await marakha.setAsset('assets/marakha.mp3');
@@ -247,6 +260,7 @@ class _GameScreenState extends State<GameScreen> {
       }
     });
   }
+
   @override
   void dispose() {
     player.stop();
